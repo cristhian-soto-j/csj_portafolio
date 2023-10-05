@@ -1,0 +1,69 @@
+<!-- templates/base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Cristhian Soto Jarami{% endblock title %}</title>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
+</head>
+<body >
+    <header class="page-header">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg" id="nav1">
+                <a class="navbar-brand link-light" href="/">CRISTHIAN SJ</a>
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-light" href="/projects">Proyectos</a>
+                    </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link link-light">Contacto</a>
+                </li>
+                </ul>
+            </nav>
+            <!-- <h1><a href="/">
+                <h1>Cristhian Soto Jarami</h1>
+                <h4>Data Scientis - Ing en Minas/Datos</h4>
+            </a></h1> -->
+        </div>
+    </header>
+{% block page_content %}
+{% endblock page_content %}
+<nav id="nav-footer"    class="navbar bg-warning d-flex flex-wrap justify-content-between align-items-center fixed-bottom mt-auto">
+    <div class="col-md-4 d-flex align-items-center">
+        <span class="mb-3 mb-md-0 text-muted">© 2023 Cristhián Soto Jarami</span>
+    </div>
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3">
+            <a class="text-muted" href="https://www.linkedin.com/in/cristhi%C3%A1n-soto-jarami-a931911b1/">
+                <img class ="footer-img" src="/media/project_icons/linkedin.png" style="width: 24px; height:24px;" alt="linkedin">  
+        </a>
+        </li>
+        <li class="ms-3">
+            <a class="text-muted" href="#">
+                <img class ="footer-img" src="/media/project_icons/whatsapp-black.png" style="width: 24px; height:24px;" alt="whatsapp">
+            </a>
+        </li>
+        <li class="ms-3">
+            <a class="text-muted" href="#">
+                <img class ="footer-img" src="/media/project_icons/email.png" style="width: 24px; height:24px;" alt="email">
+            </a>
+        </li>
+        <li class="ms-3">
+            <a class="text-muted" href="#">
+                <img class ="footer-img" src="/media/project_icons/phone-call.png" style="width: 24px; height:24px;" alt="phone">
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
