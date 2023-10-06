@@ -44,7 +44,7 @@ RUN mkdir /django/arrow \
     && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /tmp/apache-arrow.tar.gz \
     && tar -xvf /tmp/apache-arrow.tar.gz -C /django/arrow --strip-components 1 \
     && mkdir -p /arrow/cpp/build \
-    && cd /arrow/cpp/build \
+    && cd /django/arrow/cpp/build \
     && cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
     -DOPENSSL_ROOT_DIR=/usr/local/ssl \
     -DCMAKE_INSTALL_LIBDIR=lib \
