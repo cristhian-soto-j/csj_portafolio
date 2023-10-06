@@ -1,58 +1,65 @@
-FROM ubuntu:20.04
+FROM python:3.7-alpine3.8
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev make cmake g++ zlib-dev dpkg git curl
+
+#RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev make cmake g++ zlib-dev dpkg git curl
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache build-base \
-    autoconf \
-    bash \
-    bison \
-    boost-dev \
+    && apk add --no-cache \
+    git \
+    build-base \
     cmake \
+    bash \
+    jemalloc-dev \
+    boost-dev \
+    autoconf \
+    zlib-dev \
     flex \
-    #libressl-dev \
-    zlib-dev
-RUN apk add --no-cache icu-libs
-RUN apk add --no-cache icu-data-full
+    bison \
+    postgresql-dev \
+    gcc \
+    python3-dev \
+    musl-dev \
+    make \
+    g++ \
+    zlib-dev \
+    dpkg \
+    curl \
+    icu-libs \
+    icu-data-full
 
 
-RUN pip install --no-cache-dir six pytest numpy cython
+RUN pip install six numpy pandas cython pytest
+#RUN pip install --no-cache-dir six pytest numpy cython
 #RUN pip install --no-cache-dir pandas
+RUN git clone https://github.com/apache/arrow.git
+RUN mkdir /arrow/cpp/build    
+WORKDIR /arrow/cpp/build
 
-ARG ARROW_VERSION=3.0.0
-ARG ARROW_SHA1=2ede75769e12df972f0acdfddd53ab15d11e0ac2
-ARG ARROW_BUILD_TYPE=release
+ENV ARROW_BUILD_TYPE=release
+ENV ARROW_HOME=/usr/local
+ENV PARQUET_HOME=/usr/local
 
-ENV ARROW_HOME=/usr/local \
-    PARQUET_HOME=/usr/local
+#disable backtrace
+RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
 
-#Download and build apache-arrow
-RUN mkdir /arrow \
-    && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /tmp/apache-arrow.tar.gz \
-    && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /tmp/apache-arrow.tar.gz \
-    && tar -xvf /tmp/apache-arrow.tar.gz -C /arrow --strip-components 1 \
-    && mkdir -p /arrow/cpp/build \
-    && cd /arrow/cpp/build \
-    && cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
-    -DOPENSSL_ROOT_DIR=/usr/local/ssl \
+RUN cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
-    -DARROW_WITH_BZ2=ON \
-    -DARROW_WITH_ZLIB=ON \
-    -DARROW_WITH_ZSTD=ON \
-    -DARROW_WITH_LZ4=ON \
-    -DARROW_WITH_SNAPPY=ON \
-    -DARROW_PARQUET=ON \
-    -DARROW_PYTHON=ON \
-    -DARROW_PLASMA=ON \
+    -DARROW_PARQUET=on \
+    -DARROW_PYTHON=on \
+    -DARROW_PLASMA=on \
     -DARROW_BUILD_TESTS=OFF \
-    .. \
-    && make -j$(nproc) \
-    && make install \
-    && cd /arrow/python \
-    && python setup.py build_ext --build-type=$ARROW_BUILD_TYPE --with-parquet \
-    && python setup.py install \
-    && rm -rf /arrow /tmp/apache-arrow.tar.gz
+    ..
+RUN make -j$(nproc)
+RUN make install
+
+WORKDIR /arrow/python
+
+RUN python setup.py build_ext --build-type=$ARROW_BUILD_TYPE \
+    --with-parquet --inplace
+#--with-plasma  # commented out because plasma tests don't work
+RUN py.test pyarrow
+
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
