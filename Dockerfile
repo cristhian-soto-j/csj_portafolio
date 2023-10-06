@@ -45,13 +45,13 @@ ENV ARROW_HOME=/django/usr/local \
 
 #Download and build apache-arrow
 RUN mkdir /django/arrow \
-    && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /tmp/apache-arrow.tar.gz \
-    && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /tmp/apache-arrow.tar.gz \
-    && tar -xvf /tmp/apache-arrow.tar.gz -C /django/arrow --strip-components 1 \
+    && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /django/tmp/apache-arrow.tar.gz \
+    && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /django/tmp/apache-arrow.tar.gz \
+    && tar -xvf /django/tmp/apache-arrow.tar.gz -C /django/arrow --strip-components 1 \
     && mkdir -p /django/arrow/cpp/build \
     && cd /django/arrow/cpp/build \
     && cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
-    -DOPENSSL_ROOT_DIR=/usr/local/ssl \
+    -DOPENSSL_ROOT_DIR=/django/usr/local/ssl \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
     -DARROW_WITH_BZ2=ON \
@@ -69,7 +69,7 @@ RUN mkdir /django/arrow \
     && cd /django/arrow/python \
     && python setup.py build_ext --build-type=$ARROW_BUILD_TYPE --with-parquet \
     && python setup.py install \
-    && rm -rf /django/arrow /tmp/apache-arrow.tar.gz
+    && rm -rf /django/arrow /django/tmp/apache-arrow.tar.gz
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
