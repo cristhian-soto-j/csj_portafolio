@@ -1,4 +1,4 @@
-FROM python:3.11.6-alpine3.18
+FROM python:3.8-alpine
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
 
@@ -29,38 +29,42 @@ RUN apk update \
 #    icu-data-full
 
 
-RUN pip install --upgrade pip
 RUN apk add py3-numpy py3-scipy py3-pandas py3-arrow py3-pyarrow
-# RUN pip install six cython pytest
-RUN git clone https://github.com/apache/arrow.git
-RUN mkdir /arrow/cpp/build    
-WORKDIR /django/arrow/cpp/build
+RUN pip install --upgrade pip
 
-ENV ARROW_BUILD_TYPE=release
-ENV ARROW_HOME=/usr/local
-ENV PARQUET_HOME=/usr/local
+ARG ARROW_VERSION=3.0.0
+ARG ARROW_SHA1=c1fed962cddfab1966a0e03461376ebb28cf17d3
+ARG ARROW_BUILD_TYPE=release
 
-#disable backtrace
-RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
-
-RUN cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
+ENV ARROW_HOME=/usr/local \
+    PARQUET_HOME=/usr/local
+#Download and build apache-arrow
+RUN mkdir /django/arrow \
+    && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /tmp/apache-arrow.tar.gz \
+    && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /tmp/apache-arrow.tar.gz \
+    && tar -xvf /tmp/apache-arrow.tar.gz -C /arrow --strip-components 1 \
+    && mkdir -p /arrow/cpp/build \
+    && cd /arrow/cpp/build \
+    && cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
+    -DOPENSSL_ROOT_DIR=/usr/local/ssl \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
-    -DARROW_PARQUET=on \
-    -DARROW_PYTHON=on \
-    -DARROW_PLASMA=on \
+    -DARROW_WITH_BZ2=ON \
+    -DARROW_WITH_ZLIB=ON \
+    -DARROW_WITH_ZSTD=ON \
+    -DARROW_WITH_LZ4=ON \
+    -DARROW_WITH_SNAPPY=ON \
+    -DARROW_PARQUET=ON \
+    -DARROW_PYTHON=ON \
+    -DARROW_PLASMA=ON \
     -DARROW_BUILD_TESTS=OFF \
-    ..
-RUN make -j$(nproc)
-RUN make install
+    .. \
+    && make -j$(nproc) \
+    && make install \
+    && cd /arrow/python \
+    && python setup.py build_ext --build-type=$ARROW_BUILD_TYPE --with-parquet \
+    && python setup.py install \
+    && rm -rf /arrow /tmp/apache-arrow.tar.gz
 
-WORKDIR /django/arrow/python
-
-RUN python setup.py build_ext --build-type=$ARROW_BUILD_TYPE \
-    --with-parquet --inplace
-#--with-plasma  # commented out because plasma tests don't work
-RUN py.test pyarrow
-
-WORKDIR /django
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
