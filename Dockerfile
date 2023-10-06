@@ -47,7 +47,7 @@ ENV ARROW_HOME=/django/usr/local \
 RUN mkdir /django/arrow \
     && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /tmp/apache-arrow.tar.gz \
     && echo "${ARROW_SHA1} *apache-arrow.tar.gz" | sha1sum /tmp/apache-arrow.tar.gz \
-    && tar -xvf /django/tmp/apache-arrow.tar.gz -C /django/arrow --strip-components 1 \
+    && tar -xvf /tmp/apache-arrow.tar.gz -C /django/arrow --strip-components 1 \
     && mkdir -p /django/arrow/cpp/build \
     && cd /django/arrow/cpp/build \
     && cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
