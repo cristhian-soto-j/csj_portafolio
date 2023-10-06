@@ -30,7 +30,7 @@ RUN apk update \
 
 
 RUN pip install --upgrade pip
-RUN apk add py3-numpy@community py3-scipy@community py3-pandas@edge
+RUN apk add py3-numpy py3-scipy py3-pandas
 RUN pip install six cython pytest
 RUN git clone https://github.com/apache/arrow.git
 RUN mkdir /arrow/cpp/build    
