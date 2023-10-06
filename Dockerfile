@@ -66,10 +66,10 @@ RUN mkdir /django/arrow \
     .. \
     && make -j$(nproc) \
     && make install \
-    && cd /arrow/python \
+    && cd /django/arrow/python \
     && python setup.py build_ext --build-type=$ARROW_BUILD_TYPE --with-parquet \
     && python setup.py install \
-    && rm -rf /arrow /tmp/apache-arrow.tar.gz
+    && rm -rf /django/arrow /tmp/apache-arrow.tar.gz
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
