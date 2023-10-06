@@ -1,7 +1,7 @@
 FROM python:3.8-alpine
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
-#RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev make cmake g++ zlib-dev dpkg git curl
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev make cmake g++ zlib-dev dpkg git curl
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache build-base \
@@ -18,7 +18,7 @@ RUN apk add --no-cache icu-data-full
 
 
 RUN pip install --no-cache-dir six pytest numpy cython
-RUN pip install --no-cache-dir pandas
+#RUN pip install --no-cache-dir pandas
 
 ARG ARROW_VERSION=3.0.0
 ARG ARROW_SHA1=2ede75769e12df972f0acdfddd53ab15d11e0ac2
