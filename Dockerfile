@@ -31,6 +31,7 @@ RUN apk update \
 
 RUN apk add py3-numpy py3-scipy py3-pandas py3-arrow py3-pyarrow
 RUN pip install --upgrade pip
+RUN pip install --no-cache-dir six pytest numpy cython
 
 ARG ARROW_VERSION=3.0.0
 ARG ARROW_SHA1=c1fed962cddfab1966a0e03461376ebb28cf17d3
@@ -40,7 +41,7 @@ ENV ARROW_HOME=/usr/local \
     PARQUET_HOME=/usr/local
 
 #disable backtrace
-RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
+#RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
 
 #Download and build apache-arrow
 RUN mkdir /django/arrow \
