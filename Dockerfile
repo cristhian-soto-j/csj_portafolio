@@ -32,34 +32,34 @@ RUN apk update \
 RUN pip install --upgrade pip
 RUN apk add py3-numpy py3-scipy py3-pandas py3-arrow py3-pyarrow
 # RUN pip install six cython pytest
-# RUN git clone https://github.com/apache/arrow.git
-# RUN mkdir /arrow/cpp/build    
-# WORKDIR /arrow/cpp/build
+RUN git clone https://github.com/apache/arrow.git
+RUN mkdir /arrow/cpp/build    
+WORKDIR /django/arrow/cpp/build
 
-# ENV ARROW_BUILD_TYPE=release
-# ENV ARROW_HOME=/usr/local
-# ENV PARQUET_HOME=/usr/local
+ENV ARROW_BUILD_TYPE=release
+ENV ARROW_HOME=/usr/local
+ENV PARQUET_HOME=/usr/local
 
-# #disable backtrace
-# RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
+#disable backtrace
+RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
 
-# RUN cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
-#     -DCMAKE_INSTALL_LIBDIR=lib \
-#     -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
-#     -DARROW_PARQUET=on \
-#     -DARROW_PYTHON=on \
-#     -DARROW_PLASMA=on \
-#     -DARROW_BUILD_TESTS=OFF \
-#     ..
-# RUN make -j$(nproc)
-# RUN make install
+RUN cmake -DCMAKE_BUILD_TYPE=$ARROW_BUILD_TYPE \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_PREFIX=$ARROW_HOME \
+    -DARROW_PARQUET=on \
+    -DARROW_PYTHON=on \
+    -DARROW_PLASMA=on \
+    -DARROW_BUILD_TESTS=OFF \
+    ..
+RUN make -j$(nproc)
+RUN make install
 
-# WORKDIR /arrow/python
+WORKDIR /django/arrow/python
 
-# RUN python setup.py build_ext --build-type=$ARROW_BUILD_TYPE \
-#     --with-parquet --inplace
-# #--with-plasma  # commented out because plasma tests don't work
-# RUN py.test pyarrow
+RUN python setup.py build_ext --build-type=$ARROW_BUILD_TYPE \
+    --with-parquet --inplace
+#--with-plasma  # commented out because plasma tests don't work
+RUN py.test pyarrow
 
 WORKDIR /django
 COPY requirements.txt requirements.txt
