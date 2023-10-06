@@ -30,9 +30,8 @@ RUN apk update \
 
 
 RUN pip install --upgrade pip
-RUN pip install six numpy pandas cython pytest
-#RUN pip install --no-cache-dir six pytest numpy cython
-#RUN pip install --no-cache-dir pandas
+RUN apk add py2-numpy@community py2-scipy@community py-pandas@edge
+RUN pip install six cython pytest
 RUN git clone https://github.com/apache/arrow.git
 RUN mkdir /arrow/cpp/build    
 WORKDIR /arrow/cpp/build
