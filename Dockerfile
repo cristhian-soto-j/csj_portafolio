@@ -37,8 +37,8 @@ ARG ARROW_VERSION=3.0.0
 ARG ARROW_SHA1=c1fed962cddfab1966a0e03461376ebb28cf17d3
 ARG ARROW_BUILD_TYPE=release
 
-ENV ARROW_HOME=/usr/local \
-    PARQUET_HOME=/usr/local
+ENV ARROW_HOME=/django/usr/local \
+    PARQUET_HOME=/django/usr/local
 
 #disable backtrace
 #RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
