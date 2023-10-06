@@ -1,4 +1,4 @@
-FROM python:3.8-alpine
+FROM python:3.8
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
 
