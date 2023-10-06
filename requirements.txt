@@ -5,4 +5,4 @@ sqlparse==0.4.4
 typing_extensions==4.8.0
 setuptools==68.2.2
 streamlit
-
+gunicorn
