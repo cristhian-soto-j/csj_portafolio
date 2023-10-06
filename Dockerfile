@@ -3,28 +3,28 @@ WORKDIR /django
 ENV PYTHONUNBUFFERED=1
 
 
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    git \
-    build-base \
-    cmake \
-    bash \
-    jemalloc-dev \
-    boost-dev \
-    autoconf \
-    zlib-dev \
-    flex \
-    bison \
-    postgresql-dev \
-    gcc \
-    python3-dev \
-    musl-dev \
-    make \
-    g++ \
-    zlib-dev \
-    dpkg \
-    curl 
+# RUN apk update \
+#     && apk upgrade \
+#     && apk add --no-cache \
+#     git \
+#     build-base \
+#     cmake \
+#     bash \
+#     jemalloc-dev \
+#     boost-dev \
+#     autoconf \
+#     zlib-dev \
+#     flex \
+#     bison \
+#     postgresql-dev \
+#     gcc \
+#     python3-dev \
+#     musl-dev \
+#     make \
+#     g++ \
+#     zlib-dev \
+#     dpkg \
+#     curl 
 #    icu-libs 
 #    icu-data-full
 
