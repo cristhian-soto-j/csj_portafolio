@@ -61,5 +61,6 @@ RUN python setup.py build_ext --build-type=$ARROW_BUILD_TYPE \
 #--with-plasma  # commented out because plasma tests don't work
 RUN py.test pyarrow
 
+WORKDIR /django
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
