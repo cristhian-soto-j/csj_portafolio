@@ -38,6 +38,10 @@ ARG ARROW_BUILD_TYPE=release
 
 ENV ARROW_HOME=/usr/local \
     PARQUET_HOME=/usr/local
+
+#disable backtrace
+RUN sed -i -e '/_EXECINFO_H/,/endif/d' -e '/execinfo/d' ../src/arrow/util/logging.cc
+
 #Download and build apache-arrow
 RUN mkdir /django/arrow \
     && wget -q https://github.com/apache/arrow/archive/apache-arrow-${ARROW_VERSION}.tar.gz -O /tmp/apache-arrow.tar.gz \
