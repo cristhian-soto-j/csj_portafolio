@@ -2,7 +2,7 @@ FROM python:3.7-alpine3.8
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
 
-#RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev make cmake g++ zlib-dev dpkg git curl
+
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache \
@@ -29,6 +29,7 @@ RUN apk update \
 #    icu-data-full
 
 
+RUN pip install --upgrade pip
 RUN pip install six numpy pandas cython pytest
 #RUN pip install --no-cache-dir six pytest numpy cython
 #RUN pip install --no-cache-dir pandas
