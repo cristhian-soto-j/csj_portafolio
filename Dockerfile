@@ -25,8 +25,8 @@ RUN apk update \
     zlib-dev \
     dpkg \
     curl \
-    icu-libs \
-    icu-data-full
+    icu-libs 
+#    icu-data-full
 
 
 RUN pip install six numpy pandas cython pytest
