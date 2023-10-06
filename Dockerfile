@@ -1,6 +1,4 @@
-FROM scratch
-ADD alpine-minirootfs-3.15.10-x86_64.tar.gz /
-CMD ["/bin/sh"]
+FROM python:3.11.6-alpine3.18
 WORKDIR /django
 ENV PYTHONUNBUFFERED=1
 
