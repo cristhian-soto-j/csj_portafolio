@@ -29,7 +29,7 @@ ENV PYTHONUNBUFFERED=1
 #    icu-data-full
 
 
-RUN apk add py3-numpy py3-scipy py3-pandas py3-arrow py3-pyarrow
+# RUN apk add py3-numpy py3-scipy py3-pandas py3-arrow py3-pyarrow
 RUN pip install --upgrade pip
 # RUN pip install --no-cache-dir six pytest numpy cython
 
