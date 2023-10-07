@@ -86,4 +86,4 @@ services:
 networks:
   default:
     external:
-      name: default
+      name: app_net
