@@ -67,6 +67,9 @@ services:
       - app
     environment: 
       NGINX_PORTS: ${NGINX_PORTS}
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.5
 
 
 
