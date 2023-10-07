@@ -10,9 +10,9 @@ services:
     restart: "on-failure"
     env_file:
       - .env
-    networks:
-      app_net:
-        ipv4_address: 192.168.0.4
+    # networks:
+    #   app_net:
+    #     ipv4_address: 192.168.0.4
     image: django
     container_name: django_container
     command: sh -c "python manage.py makemigrations &&
@@ -27,7 +27,7 @@ services:
   db:
     container_name: postgresql_db
     image: postgres
-    restart: always 
+    restart: "on-failure" 
     volumes:
       - ./data/db:/var/lib/postgresql/data
     env_file:
@@ -37,14 +37,14 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
       PGPORT: ${DB_PORT}
-    networks:
-      app_net:
-        ipv4_address: 192.168.0.2  
+    # networks:
+    #   app_net:
+    #     ipv4_address: 192.168.0.2  
 
   pgadmin:
     container_name: pgadmin4
     image: dpage/pgadmin4
-    restart: always
+    restart: "on-failure"
     env_file:
       - .env
     volumes:
@@ -53,9 +53,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} 
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PG_PORT: ${PG_PORT}
-    networks:
-      app_net:
-        ipv4_address: 192.168.0.3
+    # networks:
+    #   app_net:
+    #     ipv4_address: 192.168.0.3
 
   nginx:
     build: ./nginx
@@ -67,18 +67,23 @@ services:
       - app
     environment: 
       NGINX_PORTS: ${NGINX_PORTS}
-    networks:
-      app_net:
-        ipv4_address: 192.168.0.5
+    # networks:
+    #   app_net:
+    #     ipv4_address: 192.168.0.5
 
 
 
  
     
+# networks:
+#   app_net:
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: "192.168.0.0/24"
+#           gateway: 192.168.0.1
+
 networks:
-  app_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "192.168.0.0/24"
-          gateway: 192.168.0.1
+  default:
+    external:
+      name: default
