@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-kl+=0bqp+d$glvvz0ztk8z0yeve!a%)j!a8sots+w5xnq%w-jq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost","137.184.98.222"]
 
 
 # Application definition
@@ -88,7 +88,7 @@ DATABASES = {
         "NAME": "test_db",
         "USER": "root",
         "PASSWORD": "root",
-        #"HOST": "192.168.0.2",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
@@ -138,3 +138,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # storage media constructs
 MEDIA_ROOT = BASE_DIR / "uploads/"  # file system
 MEDIA_URL = "media/"  # user-facing URL
+
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
