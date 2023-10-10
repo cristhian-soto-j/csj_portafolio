@@ -21,8 +21,6 @@ services:
   # web container (django + gunicorn)
   djangoapp:
     build: .
-    container_name: django_container
-    image: django
     restart: "on-failure"
     environment:
       - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
@@ -30,11 +28,8 @@ services:
       - .:/opt/services/djangoapp/src
       - static:/opt/services/djangoapp/static
       - media:/opt/services/djangoapp/media
-    expose:
-      - ${APP_PORT}
     env_file:
       - .env
-    command: "gunicorn core.wsgi:application --bind 0.0.0.0:8000:${APP_PORT}"
     networks:
       - database1_network
       - nginx_network
