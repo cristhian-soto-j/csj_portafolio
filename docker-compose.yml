@@ -1,29 +1,9 @@
-version: '3.1'
+version: '3'
 
 services:
-  app:
-    build: .
-    volumes:
-      - .:/django
-    expose:
-      - ${APP_PORT}
-    restart: "on-failure"
-    env_file:
-      - .env
-    image: django
-    container_name: django_container
-    # command: sh -c "python manage.py makemigrations &&
-    #                 python manage.py migrate &&
-    #                 gunicorn django.wsgi:application --bind 0.0.0.0:8000" 
-    command: "gunicorn core.wsgi:application --bind 0.0.0.0:8000:${APP_PORT}"
-    environment:
-      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
-    depends_on:
-      - db
-
-
+  # database container's
   db:
-    container_name: postgresql_db
+    container_name: database1
     image: postgres
     restart: "on-failure" 
     volumes:
@@ -35,33 +15,71 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
       PGPORT: ${DB_PORT}
+    network:
+      - database1_network
 
+  # web container (django + gunicorn)
+  djangoapp:
+    build: .
+    container_name: django_container
+    image: django
+    restart: "on-failure"
+    environment:
+      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    volumes:
+      - .:/opt/services/djangoapp/src
+      - static:/opt/services/djangoapp/static
+      - media:/opt/services/djangoapp/media
+    expose:
+      - ${APP_PORT}
+    env_file:
+      - .env
+    command: "gunicorn core.wsgi:application --bind 0.0.0.0:8000:${APP_PORT}"
+    networks:
+      - database1_network
+      - nginx_network
+    depends_on:
+     - db
+
+  # reverse proxy container (nginx)
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static:/opt/services/djangoapp/static
+      - media:/opt/services/djangoapp/media
+    env_file:
+      - .env
+    environment: 
+      NGINX_PORTS: ${NGINX_PORTS}
+    networks:
+      - nginx_network
+    depends_on:
+      - djangoapp
+
+  # pgadmin container
   pgadmin:
     container_name: pgadmin4
     image: dpage/pgadmin4
     restart: "on-failure"
     env_file:
       - .env
-    volumes:
-      - ./data/pgadmin-data:/var/lib/pgadmin4/data
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} 
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PG_PORT: ${PG_PORT}
-
-  nginx:
-    build: ./nginx
-    env_file:
-      - .env
     volumes:
-      - ./data/nginx:/var/lib/nginx/data
-    depends_on:
-      - app
-    environment: 
-      NGINX_PORTS: ${NGINX_PORTS}
+      - ./data/pgadmin-data:/opt/services/djangoapp/pgadmin4/data
 
 
 networks:
-  default:
-    external:
-      name: app_net
+  database1_network:
+    driver: bridge
+  nginx_network:
+    driver: bridge
+  
+volumes:
+  ./data:
+  static:
+  media:
+  
