@@ -52,20 +52,6 @@ services:
     depends_on:
       - djangoapp
 
-  # pgadmin container
-  pgadmin:
-    container_name: pgadmin4
-    image: dpage/pgadmin4
-    restart: "on-failure"
-    env_file:
-      - .env
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} 
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PG_PORT: ${PG_PORT}
-    volumes:
-      - ./data/pgadmin-data:/opt/services/djangoapp/pgadmin4/data
-
 
 networks:
   database1_network:
