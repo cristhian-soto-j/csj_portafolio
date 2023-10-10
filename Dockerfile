@@ -11,4 +11,4 @@ COPY . /opt/services/djangoapp/src
 #RUN cd core && python manage.py collectstatic --no-input
 
 EXPOSE 8000
-CMD ["gunicorn", "-c", "config/gunicorn/conf.py", "--bind", ":8000", "--chdir", "core", "core.wsgi:application"]
+CMD ["gunicorn", "-c", "/gunicorn/conf.py", "--bind", ":8000", "--chdir", "core", "core.wsgi:application"]
