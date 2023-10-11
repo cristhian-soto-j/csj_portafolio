@@ -14,9 +14,6 @@ gunicorn = "*"
 
 [dev-packages]
 
-tox = "*"
-ipython = "*"
-
 
 [requires]
 
