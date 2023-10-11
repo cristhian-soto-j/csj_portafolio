@@ -2,8 +2,6 @@
 
 COMMAND = docker-compose run --rm djangoapp /bin/bash -c
 
-all: build test
-
 build:
 	docker-compose build
 
