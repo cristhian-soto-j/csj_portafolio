@@ -3,18 +3,10 @@ version: '3'
 services:
   # database container's
   db:
-    container_name: database1
-    image: postgres
+    image: postgres:10
     restart: "on-failure" 
     volumes:
-      - ./data/db:/var/lib/postgresql/data
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      PGPORT: ${DB_PORT}
+      - db1_volume:/var/lib/postgresql/data
     networks:
       - database1_network
 
@@ -23,13 +15,11 @@ services:
     build: .
     restart: "on-failure"
     environment:
-      - DJANGO_ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DJANGO_SETTINGS_MODULE
     volumes:
       - .:/opt/services/djangoapp/src
       - static:/opt/services/djangoapp/static
       - media:/opt/services/djangoapp/media
-    env_file:
-      - .env
     networks:
       - database1_network
       - nginx_network
@@ -38,15 +28,13 @@ services:
 
   # reverse proxy container (nginx)
   nginx:
-    image: nginx
+    image: nginx:1.13
+    ports:
+      - 8000:80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - static:/opt/services/djangoapp/static
       - media:/opt/services/djangoapp/media
-    env_file:
-      - .env
-    environment: 
-      NGINX_PORTS: ${NGINX_PORTS}
     networks:
       - nginx_network
     depends_on:
@@ -60,6 +48,7 @@ networks:
     driver: bridge
   
 volumes:
+  db1_volume:
   static:
   media:
   
