@@ -5,6 +5,7 @@ RUN mkdir -p /opt/services/djangoapp/src
 
 COPY Pipfile Pipfile.lock /opt/services/djangoapp/src/
 WORKDIR /opt/services/djangoapp/src
+RUN apt-get update && apt-get install -y python3 python3-pip
 RUN pip install pipenv && pipenv install --system
 
 COPY . /opt/services/djangoapp/src
