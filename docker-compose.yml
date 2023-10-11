@@ -4,7 +4,7 @@ services:
   # database container's
   db:
     image: postgres:10
-    #restart: "always" 
+    restart: "always" 
     volumes:
       - db:/var/lib/postgresql/data
     env_file:
