@@ -7,6 +7,8 @@ services:
     #restart: "always" 
     volumes:
       - db1_volume:/var/lib/postgresql/data
+    env_file:
+      - .database1_env
     networks:
       - database1_network
 
