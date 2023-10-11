@@ -4,7 +4,7 @@ services:
   # database container's
   db:
     image: postgres:10
-    restart: "on-failure" 
+    #restart: "always" 
     volumes:
       - db1_volume:/var/lib/postgresql/data
     networks:
@@ -13,7 +13,7 @@ services:
   # web container (django + gunicorn)
   djangoapp:
     build: .
-    restart: "on-failure"
+    restart: "always"
     environment:
       - DJANGO_SETTINGS_MODULE
     volumes:
