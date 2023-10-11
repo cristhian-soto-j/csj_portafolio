@@ -9,7 +9,7 @@ run:
 	docker-compose up
 
 migrate:
-	$(COMMAND) 'cd core; for db in default default database1; do ./manage.py migrate --database=$${db}; done'
+	$(COMMAND) 'cd core; for db in default db; do ./manage.py migrate --database=$${db}; done'
 
 collectstatic:
 	docker-compose run --rm djangoapp core/manage.py collectstatic --no-input
