@@ -14,6 +14,9 @@ services:
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
       - "PGDATA=/var/lib/postgresql/data/pgdata"
+      - POSTGRES_USER=kri
+      - POSTGRES_PASSWORD=kri
+      - POSTGRES_DB=db
     networks:
       - database1_network
 
