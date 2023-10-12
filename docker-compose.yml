@@ -13,6 +13,7 @@ services:
       - .db_env
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - "PGDATA=/var/lib/postgresql/data/pgdata"
     networks:
       - database1_network
 
