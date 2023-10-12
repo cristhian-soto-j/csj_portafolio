@@ -29,7 +29,9 @@ ALLOWED_HOSTS = [
     "0.0.0.0", 
     "127.0.0.1", 
     "localhost",
-    "node36a.containers.back4app.com"]
+    "node36a.containers.back4app.com",
+    "csjportafolio-roa0v4r5.b4a.run"
+    ]
 
 
 # Application definition
