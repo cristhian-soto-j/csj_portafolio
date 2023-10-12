@@ -11,6 +11,8 @@ services:
       - "5432"
     env_file:
       - .db_env
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
     networks:
       - database1_network
 

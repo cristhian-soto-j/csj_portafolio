@@ -10,9 +10,9 @@ RUN pip install pipenv && pipenv install --system
 
 RUN pip install psycopg2-binary
 
-COPY base.py base.py
+# COPY base.py base.py
 
-RUN python base.py
+# RUN python base.py
 
 
 COPY . /opt/services/djangoapp/src
