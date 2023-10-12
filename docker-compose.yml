@@ -6,7 +6,7 @@ services:
     image: postgres:10
     restart: "always" 
     volumes:
-      - db_volume:/var/lib/postgresql/data
+      - .db:/var/lib/postgresql/data
     env_file:
       - .db_env
     networks:
@@ -20,8 +20,8 @@ services:
       - DJANGO_SETTINGS_MODULE
     volumes:
       - .:/opt/services/djangoapp/src
-      - static:/opt/services/djangoapp/static
-      - media:/opt/services/djangoapp/media
+      - static:/opt/services/djangoapp/src/static
+      - media:/opt/services/djangoapp/src/media
     networks:
       - database1_network
       - nginx_network
@@ -35,8 +35,8 @@ services:
       - 8000:80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - static:/opt/services/djangoapp/static
-      - media:/opt/services/djangoapp/media
+      - static:/opt/services/djangoapp/src/static
+      - media:/opt/services/djangoapp/src/media
     networks:
       - nginx_network
     depends_on:
@@ -50,7 +50,6 @@ networks:
     driver: bridge
   
 volumes:
-  db_volume:
   static:
   media:
   

@@ -57,11 +57,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "core.urls"
 
-TEMPLATE_DIR = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), "src/templates")
+TEMPLATE_BASE = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'src/core/templates')
+TEMPLATE_PAGES = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'src/core/pages/templates/')
+TEMPLATE_PROJECTS = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'src/core/projects/templates/projects')
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [TEMPLATE_DIR],
+        "DIRS": [
+            TEMPLATE_BASE,
+            TEMPLATE_PAGES,
+            TEMPLATE_PROJECTS,
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -131,7 +137,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
-MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'media')
-MEDIA_URL = "media/"  # user-facing URL
-STATIC_URL = 'static/'
+
+MEDIA_URL =  "/media/" # user-facing URL
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'src/static')
+MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'src/media')
+
+
+# print("base dir path", BASE_DIR)
+# print("static dir path", STATIC_ROOT)
+# print("base_template dir path", TEMPLATE_BASE)
+# print("pages_template dir path", TEMPLATE_PAGES)
+# print("projects dir path", TEMPLATE_PROJECTS)
+
+

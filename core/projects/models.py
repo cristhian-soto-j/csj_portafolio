@@ -14,6 +14,3 @@ class Icon(models.Model):
     title = models.CharField(max_length=100)
     image = models.FileField(upload_to="project_icons/", blank=True)
 
-
-def __str__(self):
-    return self.title
