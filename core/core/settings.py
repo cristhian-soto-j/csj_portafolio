@@ -96,6 +96,7 @@ DATABASES = {
         'USER': 'kri',
         'PASSWORD': 'kri',
         'HOST': 'db',
+        'HOST_AUTH_METHOD': 'trust',
         'PORT': '5432',
     }
 }
