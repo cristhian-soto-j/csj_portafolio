@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip
 RUN pip install pipenv && pipenv install --system
 
 COPY . /opt/services/djangoapp/src
-RUN cd core && python manage.py collectstatic --no-input && python manage.py migrate
+RUN cd core && python manage.py collectstatic --no-input
 #RUN cd core && for db in default && do ./manage.py migrate --database=$${db} && done
 
 
