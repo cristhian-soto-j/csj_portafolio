@@ -31,7 +31,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "node36a.containers.back4app.com",
     "node38a.containers.back4app.com",
-    "csjportafolio-roa0v4r5.b4a.run"
+    "csjportafolio-roa0v4r5.b4a.run",
+    "node41a.containers.back4app.com:5051"
     ]
 
 
