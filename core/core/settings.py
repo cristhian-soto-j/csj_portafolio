@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     "0.0.0.0", 
     "127.0.0.1", 
     "localhost",
-    "137.184.98.222"]
+    "node36a.containers.back4app.com"]
 
 
 # Application definition
