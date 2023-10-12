@@ -10,7 +10,7 @@ RUN pip install pipenv && pipenv install --system
 
 COPY . /opt/services/djangoapp/src
 RUN cd core && python manage.py collectstatic --no-input && python manage.py migrate
-RUN cd core && for db in default && do ./manage.py migrate --database=$${db} && done
+#RUN cd core && for db in default && do ./manage.py migrate --database=$${db} && done
 
 
 EXPOSE 8000
