@@ -6,7 +6,7 @@ services:
     image: postgres:10
     restart: "always" 
     volumes:
-      - .db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     env_file:
       - .db_env
     networks:
@@ -50,6 +50,7 @@ networks:
     driver: bridge
   
 volumes:
+  db:
   static:
   media:
   
