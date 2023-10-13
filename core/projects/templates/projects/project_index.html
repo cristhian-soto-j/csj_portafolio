@@ -1,11 +1,14 @@
 <!-- projects/templates/projects/project_index.html -->
 
 {% extends "base.html" %} {% block page_content %}
-<h1>Proyectos</h1>
+<h1 class="ms-1">Proyectos</h1>
 <div class="row">
   {% for project in projects %}
   <div class="col-md-4">
-    <div class="card mb-2">
+    <div
+      class="card mb-5 ms-1 me-1"
+      style="border: solid black 1px; margin-bottom: 100px"
+    >
       {% if project.image %}
       <img class="card-img-top" src="{{ project.image.url }}" />
       {% endif %}
